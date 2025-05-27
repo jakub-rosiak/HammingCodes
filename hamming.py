@@ -12,7 +12,6 @@ H_2BIT = [
     [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1]
 ]
 
-# input list of bits, output bytes
 def encode(data: bytes) -> bytes:
     bit_list = bytes_to_bit_arrays(data, 8)
     encoded_bytes = []
@@ -21,7 +20,6 @@ def encode(data: bytes) -> bytes:
 
     return extend(encoded_bytes)
 
-# inupt list of bits, output bytes
 def encode_2bit(data: bytes) -> bytes:
     bit_list = bytes_to_bit_arrays(data, 8)
     encoded_bytes = []
@@ -34,7 +32,6 @@ def encode_2bit(data: bytes) -> bytes:
         encoded_bytes.append(codeword)
     return extend(encoded_bytes)
 
-# input list of bits, output list of bits
 def encode_byte(byte):
     if len(byte) != 8:
         raise TypeError(f"Binary data must be 8 bits, got {len(byte)}")
@@ -55,7 +52,6 @@ def encode_byte(byte):
 
     return array
 
-#input position of parity bit, length of list, output list of bits controlled by parity bit
 def get_parity_list(position, max_len):
     controlled = []
     for i in range(1, max_len + 1):
@@ -63,11 +59,9 @@ def get_parity_list(position, max_len):
             controlled.append(i - 1)
     return controlled
 
-#input list of bits, output list of bits
 def to_empty_hamming_array(array):
     return [0, 0, array[0], 0, array[1], array[2], array[3], 0, array[4], array[5], array[6], array[7]]
 
-# input bytes, output byte array
 def decode(encoded_data):
     hamming_arrays = bytes_to_bit_arrays(encoded_data, 12)
 
@@ -80,7 +74,6 @@ def decode(encoded_data):
 
     return decoded_bytes
 
-# input bytes, output bytearray
 def decode_2bit(encoded_data):
     bit_arrays = bytes_to_bit_arrays(encoded_data, 16)
 
@@ -93,11 +86,9 @@ def decode_2bit(encoded_data):
 
     return decoded_bytes
 
-# input bit array, output bit array
 def decode_byte(array):
     return [array[2], array[4], array[5], array[6], array[8], array[9], array[10], array[11]]
 
-#input bytes, output list of bit positions
 def check(encoded_data):
     hamming_arrays = bytes_to_bit_arrays(encoded_data, 12)
 
@@ -109,7 +100,6 @@ def check(encoded_data):
 
     return error_positions
 
-#input bytes, output list of bit positions
 def check_2bit(encoded_data):
     bit_arrays = bytes_to_bit_arrays(encoded_data, 16)
 
@@ -134,11 +124,9 @@ def check_2bit(encoded_data):
 
     return error_positions
 
-#input encoded byte, parity check matirx, output vector
 def syndrome_check(codeword, H):
     return (H @ codeword) % 2
 
-#input list of lists of encoded bytes, output corrected list and list of corrected errors
 def correct_errors_2bit(encoded_arrays):
     H = np.array(H_2BIT)
     corrected_arrays = []
@@ -171,7 +159,6 @@ def correct_errors_2bit(encoded_arrays):
 
     return corrected_arrays, corrected_indices
 
-#input list of bits, output error position
 def get_error_position(array):
     error_position = 0
     for i in [1, 2, 4, 8]:
@@ -185,7 +172,6 @@ def get_error_position(array):
 
     return error_position
 
-#input list of bits, output
 def check_and_correct(array):
     error_position = get_error_position(array)
 
